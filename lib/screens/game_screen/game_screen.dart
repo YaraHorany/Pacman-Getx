@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../controllers/game_controller.dart';
 import '../widgets/board.dart';
+import 'package:get/get.dart';
 
 class GameScreen extends StatelessWidget {
-  const GameScreen({Key? key}) : super(key: key);
+  final GameController gameController = Get.find<GameController>();
+
+  GameScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,21 @@ class GameScreen extends StatelessWidget {
             child: Board(),
           ),
           Expanded(
-            child: Container(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    gameController.resetGame();
+                  },
+                  child: const Icon(
+                    Icons.restart_alt,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

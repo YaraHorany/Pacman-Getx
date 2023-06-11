@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 
@@ -1298,5 +1297,11 @@ class GameController extends GetxController {
     // Initial player direction
     playerDirection = "right";
     board[playerPos] = 'player';
+
+    update();
+  }
+
+  void resetGame() {
+    _buildBoard();
   }
 }

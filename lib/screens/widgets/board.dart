@@ -9,15 +9,17 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: BoardConstants.numberOfSquares,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: BoardConstants.numberInRow,
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        return Cell(index: index);
-      },
-    );
+    return GetBuilder<GameController>(builder: (context) {
+      return GridView.builder(
+        itemCount: BoardConstants.numberOfSquares,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: BoardConstants.numberInRow,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          return Cell(index: index);
+        },
+      );
+    });
   }
 }
