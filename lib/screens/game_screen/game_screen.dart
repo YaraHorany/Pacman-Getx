@@ -32,6 +32,16 @@ class GameScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
+                Obx(
+                  () => Text(
+                    "Score: ${gameController.score.toString()}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

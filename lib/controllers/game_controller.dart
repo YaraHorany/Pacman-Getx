@@ -1271,8 +1271,14 @@ class GameController extends GetxController {
   List<String> get board => _board.value;
   set board(List<String> value) => _board.value = value;
 
+  final RxInt _score = 0.obs;
+  int get score => _score.value;
+  set score(int value) => _score.value = value;
+
   late int playerPos;
   late String playerDirection;
+
+  late int mazeNum;
 
   @override
   void onInit() {
@@ -1282,9 +1288,11 @@ class GameController extends GetxController {
   }
 
   void _buildBoard() {
+    mazeNum = Random().nextInt(barriers.length);
+
     food.clear();
     for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
-      if (barriers[Random().nextInt(barriers.length)].contains(i)) {
+      if (barriers[mazeNum].contains(i)) {
         board[i] = 'barrier';
       } else {
         food.add(i);
