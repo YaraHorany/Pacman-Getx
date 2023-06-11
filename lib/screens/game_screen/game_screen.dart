@@ -58,6 +58,7 @@ class GameScreen extends StatelessWidget {
                               : GestureDetector(
                                   onTap: () {
                                     gameController.switchPaused();
+                                    gameController.mouthClosed = false;
                                   },
                                   child: const Icon(
                                     Icons.pause,

@@ -1287,9 +1287,9 @@ class GameController extends GetxController {
   late int mazeNum;
   late bool paused;
   late bool gameStarted;
+  late bool mouthClosed;
 
-  Timer? timer1;
-  Timer? timer2;
+  Timer? timer1, timer2;
 
   @override
   void onInit() {
@@ -1301,6 +1301,7 @@ class GameController extends GetxController {
     score = 0;
     paused = false;
     gameStarted = false;
+    mouthClosed = false;
 
     mazeNum = Random().nextInt(barriers.length);
 
@@ -1348,6 +1349,7 @@ class GameController extends GetxController {
     // Moving the player
     timer1 = Timer.periodic(const Duration(milliseconds: 170), (_) {
       if (!paused) {
+        mouthClosed = !mouthClosed;
         if (food.contains(playerPos)) {
           food.remove(playerPos);
           empty.add(playerPos);
@@ -1373,7 +1375,8 @@ class GameController extends GetxController {
       }
       update();
 
-      if (board.contains('food') == false) {
+      if (food.isEmpty) {
+        mouthClosed = false;
         stopTimers();
         declareWinningOrLosing();
       }

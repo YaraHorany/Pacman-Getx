@@ -36,6 +36,9 @@ class Cell extends StatelessWidget {
         innerColor: Colors.yellow,
         outerColor: Colors.black,
       );
+    } else if (gameController.board[index] == 'player' &&
+        gameController.mouthClosed) {
+      return const MyPlayer(mouthClosed: true);
     } else if (gameController.board[index] == 'player') {
       switch (gameController.playerDirection) {
         case "right":
