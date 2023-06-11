@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 
@@ -1269,4 +1271,23 @@ class GameController extends GetxController {
       RxList<String>.filled(BoardConstants.numberOfSquares, 'empty');
   List<String> get board => _board.value;
   set board(List<String> value) => _board.value = value;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _buildBoard();
+  }
+
+  void _buildBoard() {
+    food.clear();
+    for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
+      if (barriers[Random().nextInt(barriers.length)].contains(i)) {
+        board[i] = 'barrier';
+      } else {
+        food.add(i);
+        board[i] = 'food';
+      }
+    }
+  }
 }

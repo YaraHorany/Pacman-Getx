@@ -16,14 +16,14 @@ class Cell extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildCell() {
-    if (gameController.board[index] == 'empty') {
-      return const MyPixel(
-        innerColor: Colors.black,
-        outerColor: Colors.black,
+    if (gameController.board[index] == 'barrier') {
+      return MyPixel(
+        innerColor: Colors.blue[800]!,
+        outerColor: Colors.blue[900]!,
       );
     } else {
       return const MyPixel(
-        innerColor: Colors.black,
+        innerColor: Colors.yellow,
         outerColor: Colors.black,
       );
     }
