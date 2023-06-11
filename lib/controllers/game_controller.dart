@@ -1272,6 +1272,9 @@ class GameController extends GetxController {
   List<String> get board => _board.value;
   set board(List<String> value) => _board.value = value;
 
+  late int playerPos;
+  late String playerDirection;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -1289,5 +1292,11 @@ class GameController extends GetxController {
         board[i] = 'food';
       }
     }
+
+    // Initial player position
+    playerPos = BoardConstants.numberInRow * 13 + 3;
+    // Initial player direction
+    playerDirection = "right";
+    board[playerPos] = 'player';
   }
 }

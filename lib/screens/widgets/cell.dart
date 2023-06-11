@@ -21,6 +21,8 @@ class Cell extends StatelessWidget {
         innerColor: Colors.blue[800]!,
         outerColor: Colors.blue[900]!,
       );
+    } else if (gameController.board[index] == 'player') {
+      return const MyPlayer(mouthClosed: false);
     } else {
       return const MyPixel(
         innerColor: Colors.yellow,
