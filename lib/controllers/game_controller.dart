@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 
+import '../models/ghost_model.dart';
+
 class GameController extends GetxController {
   List<List<int>> barriers = [
     //Easy
@@ -1281,6 +1283,8 @@ class GameController extends GetxController {
   late int playerPos;
   late String playerDirection;
 
+  List<Ghost> ghosts = [];
+
   late int mazeNum;
   late bool paused;
   late bool gameStarted;
@@ -1318,6 +1322,18 @@ class GameController extends GetxController {
     // Initial player direction
     playerDirection = "right";
     board[playerPos] = 'player';
+
+    ghosts.clear();
+    ghosts.add(Ghost(
+        position: BoardConstants.numberInRow * 12 - 2, direction: "left"));
+    ghosts.add(
+        Ghost(position: BoardConstants.numberInRow + 1, direction: "right"));
+    ghosts.add(
+        Ghost(position: BoardConstants.numberInRow * 5 + 1, direction: "down"));
+
+    for (int i = 0; i < 3; i++) {
+      board[ghosts[i].position] = 'ghost${i + 1}';
+    }
 
     update();
   }

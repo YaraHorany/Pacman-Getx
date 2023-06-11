@@ -17,6 +17,15 @@ class Cell extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildCell() {
+    for (int i = 0; i < 3; i++) {
+      if (gameController.board[index] == 'ghost${i + 1}') {
+        return Ghost(
+          image: Image.asset(
+            'images/ghost${i + 1}.png',
+          ),
+        );
+      }
+    }
     if (gameController.board[index] == 'barrier') {
       return MyPixel(
         innerColor: Colors.blue[800]!,
