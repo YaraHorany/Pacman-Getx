@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 
@@ -1359,6 +1360,7 @@ class GameController extends GetxController {
 
       if (board.contains('food') == false) {
         stopTimers();
+        declareWinningOrLosing();
       }
     });
   }
@@ -1415,5 +1417,21 @@ class GameController extends GetxController {
 
   void stopTimers() {
     timer1!.cancel();
+  }
+
+  void declareWinningOrLosing() {
+    Get.defaultDialog(
+      title: "Level completed",
+      content: const Text("Congratulations!"),
+      actions: [
+        TextButton(
+          child: const Text('Restart'),
+          onPressed: () {
+            Get.back();
+            resetGame();
+          },
+        ),
+      ],
+    ).then((value) => resetGame());
   }
 }
