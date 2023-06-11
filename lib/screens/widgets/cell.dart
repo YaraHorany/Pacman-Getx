@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pacman_getx/screens/widgets/pixel.dart';
+import 'package:pacman_getx/screens/widgets/player.dart';
+
+import 'ghost.dart';
 
 class Cell extends StatelessWidget {
   final int index;
@@ -10,10 +13,12 @@ class Cell extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildCell() {
-    return MyPixel(
-      innerColor: Colors.blue[800]!,
-      outerColor: Colors.blue[900]!,
+    return Ghost(
+      image: Image.asset(
+        'images/ghost1.png',
+      ),
     );
+    ;
   }
 
   @override
