@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'cell.dart';
+import 'package:pacman_getx/constants.dart';
 
 class Board extends StatelessWidget {
   const Board({Key? key}) : super(key: key);
@@ -8,10 +8,10 @@ class Board extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: 11 * 16,
+      itemCount: BoardConstants.numberOfSquares,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 11,
+        crossAxisCount: BoardConstants.numberInRow,
       ),
       itemBuilder: (BuildContext context, int index) {
         return Cell(index: index);

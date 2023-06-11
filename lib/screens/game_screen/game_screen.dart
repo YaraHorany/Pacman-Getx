@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/board.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({Key? key}) : super(key: key);
