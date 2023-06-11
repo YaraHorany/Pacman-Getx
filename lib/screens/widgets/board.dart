@@ -5,21 +5,31 @@ import 'package:pacman_getx/constants.dart';
 import 'package:get/get.dart';
 
 class Board extends StatelessWidget {
-  const Board({Key? key}) : super(key: key);
+  final GameController gameController = Get.find<GameController>();
+
+  Board({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<GameController>(builder: (context) {
-      return GridView.builder(
-        itemCount: BoardConstants.numberOfSquares,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: BoardConstants.numberInRow,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          return Cell(index: index);
+    return GetBuilder<GameController>(
+      builder: (GetxController controller) => GestureDetector(
+        onVerticalDragUpdate: (details) {
+          gameController.changeDirection(details, true);
         },
-      );
-    });
+        onHorizontalDragUpdate: (details) {
+          gameController.changeDirection(details, false);
+        },
+        child: GridView.builder(
+          itemCount: BoardConstants.numberOfSquares,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: BoardConstants.numberInRow,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return Cell(index: index);
+          },
+        ),
+      ),
+    );
   }
 }

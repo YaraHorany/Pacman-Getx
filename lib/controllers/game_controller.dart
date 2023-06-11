@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 
@@ -1282,6 +1284,8 @@ class GameController extends GetxController {
   late bool paused;
   late bool gameStarted;
 
+  Timer? timer1;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -1297,6 +1301,8 @@ class GameController extends GetxController {
     mazeNum = Random().nextInt(barriers.length);
 
     food.clear();
+    empty.clear();
+
     for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
       if (barriers[mazeNum].contains(i)) {
         board[i] = 'barrier';
@@ -1319,13 +1325,95 @@ class GameController extends GetxController {
     _buildBoard();
   }
 
-  void startGame() {
+  void play() {
     gameStarted = true;
     update();
+
+    // Moving the player
+    timer1 = Timer.periodic(const Duration(milliseconds: 170), (_) {
+      if (!paused) {
+        if (food.contains(playerPos)) {
+          food.remove(playerPos);
+          empty.add(playerPos);
+          score++;
+          update();
+        }
+        board[playerPos] = 'empty';
+        switch (playerDirection) {
+          case "right":
+            moveRight();
+            break;
+          case "left":
+            moveLeft();
+            break;
+          case "up":
+            moveUp();
+            break;
+          case "down":
+            moveDown();
+            break;
+        }
+        board[playerPos] = 'player';
+      }
+      update();
+
+      if (board.contains('food') == false) {
+        stopTimers();
+      }
+    });
   }
 
   void switchPaused() {
     paused = !paused;
     update();
+  }
+
+  void changeDirection(DragUpdateDetails details, bool verticalUpdate) {
+    if (!paused && gameStarted) {
+      if (verticalUpdate) {
+        if (details.delta.dy > 0 &&
+            board[playerPos + BoardConstants.numberInRow] != 'barrier') {
+          playerDirection = "down";
+        } else if (details.delta.dy < 0 &&
+            board[playerPos - BoardConstants.numberInRow] != 'barrier') {
+          playerDirection = "up";
+        }
+      } else {
+        if (details.delta.dx > 0 && board[playerPos + 1] != 'barrier') {
+          playerDirection = "right";
+        } else if (details.delta.dx < 0 && board[playerPos - 1] != 'barrier') {
+          playerDirection = "left";
+        }
+      }
+      update();
+    }
+  }
+
+  void moveRight() {
+    if (board[playerPos + 1] != 'barrier') {
+      playerPos++;
+    }
+  }
+
+  void moveLeft() {
+    if (board[playerPos - 1] != 'barrier') {
+      playerPos--;
+    }
+  }
+
+  void moveUp() {
+    if (board[playerPos - BoardConstants.numberInRow] != 'barrier') {
+      playerPos -= BoardConstants.numberInRow;
+    }
+  }
+
+  void moveDown() {
+    if (board[playerPos + BoardConstants.numberInRow] != 'barrier') {
+      playerPos += BoardConstants.numberInRow;
+    }
+  }
+
+  void stopTimers() {
+    timer1!.cancel();
   }
 }

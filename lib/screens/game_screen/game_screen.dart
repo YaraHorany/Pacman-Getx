@@ -66,7 +66,7 @@ class GameScreen extends StatelessWidget {
                                 )
                           : GestureDetector(
                               onTap: () {
-                                gameController.startGame();
+                                gameController.play();
                               },
                               child: const Text(
                                 'Start',

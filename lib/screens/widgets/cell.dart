@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pacman_getx/screens/widgets/pixel.dart';
 import 'package:pacman_getx/screens/widgets/player.dart';
@@ -21,11 +22,50 @@ class Cell extends StatelessWidget {
         innerColor: Colors.blue[800]!,
         outerColor: Colors.blue[900]!,
       );
-    } else if (gameController.board[index] == 'player') {
-      return const MyPlayer(mouthClosed: false);
-    } else {
+    } else if (gameController.board[index] == 'food') {
       return const MyPixel(
         innerColor: Colors.yellow,
+        outerColor: Colors.black,
+      );
+    } else if (gameController.board[index] == 'player') {
+      switch (gameController.playerDirection) {
+        case "right":
+          return const MyPlayer(
+            mouthClosed: false,
+          );
+          break;
+        case "left":
+          return Transform.rotate(
+            angle: pi,
+            child: const MyPlayer(
+              mouthClosed: false,
+            ),
+          );
+          break;
+        case "up":
+          return Transform.rotate(
+            angle: 3 * pi / 2,
+            child: const MyPlayer(
+              mouthClosed: false,
+            ),
+          );
+          break;
+        case "down":
+          return Transform.rotate(
+            angle: pi / 2,
+            child: const MyPlayer(
+              mouthClosed: false,
+            ),
+          );
+          break;
+        default:
+          return const MyPlayer(
+            mouthClosed: false,
+          );
+      }
+    } else {
+      return const MyPixel(
+        innerColor: Colors.black,
         outerColor: Colors.black,
       );
     }
