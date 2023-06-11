@@ -11,7 +11,7 @@ class GameScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 10,
-            child: Container(),
+            child: Board(),
           ),
           Expanded(
             child: Container(),
