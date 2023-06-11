@@ -42,6 +42,41 @@ class GameScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                GetBuilder<GameController>(
+                  builder: (GetxController controller) =>
+                      gameController.gameStarted
+                          ? gameController.paused
+                              ? GestureDetector(
+                                  onTap: () {
+                                    gameController.switchPaused();
+                                  },
+                                  child: const Icon(
+                                    Icons.play_arrow,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    gameController.switchPaused();
+                                  },
+                                  child: const Icon(
+                                    Icons.pause,
+                                    color: Colors.white,
+                                  ),
+                                )
+                          : GestureDetector(
+                              onTap: () {
+                                gameController.startGame();
+                              },
+                              child: const Text(
+                                'Start',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                ),
               ],
             ),
           ),

@@ -1279,6 +1279,8 @@ class GameController extends GetxController {
   late String playerDirection;
 
   late int mazeNum;
+  late bool paused;
+  late bool gameStarted;
 
   @override
   void onInit() {
@@ -1288,6 +1290,10 @@ class GameController extends GetxController {
   }
 
   void _buildBoard() {
+    score = 0;
+    paused = false;
+    gameStarted = false;
+
     mazeNum = Random().nextInt(barriers.length);
 
     food.clear();
@@ -1311,5 +1317,15 @@ class GameController extends GetxController {
 
   void resetGame() {
     _buildBoard();
+  }
+
+  void startGame() {
+    gameStarted = true;
+    update();
+  }
+
+  void switchPaused() {
+    paused = !paused;
+    update();
   }
 }
