@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/screens/game_screen/game_screen.dart';
-
 import 'core/bindings/main_bindings.dart';
 
 void main() {

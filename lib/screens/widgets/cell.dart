@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:pacman_getx/screens/widgets/pixel.dart';
 import 'package:pacman_getx/screens/widgets/player.dart';
+import '../../controllers/game_controller.dart';
 import 'ghost.dart';
+import 'package:get/get.dart';
 
 class Cell extends StatelessWidget {
+  final GameController gameController = Get.find<GameController>();
+
   final int index;
 
-  const Cell({
+  Cell({
     Key? key,
     required this.index,
   }) : super(key: key);
 
   Widget _buildCell() {
-    return Ghost(
-      image: Image.asset(
-        'images/ghost1.png',
-      ),
-    );
+    if (gameController.board[index] == 'empty') {
+      return const MyPixel(
+        innerColor: Colors.black,
+        outerColor: Colors.black,
+      );
+    } else {
+      return const MyPixel(
+        innerColor: Colors.black,
+        outerColor: Colors.black,
+      );
+    }
   }
 
   @override
