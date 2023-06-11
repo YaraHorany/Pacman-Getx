@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
@@ -1290,10 +1289,10 @@ class GameController extends GetxController {
   late bool gameStarted;
 
   Timer? timer1;
+  Timer? timer2;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     _buildBoard();
   }
@@ -1379,6 +1378,26 @@ class GameController extends GetxController {
         declareWinningOrLosing();
       }
     });
+
+    // Moving the ghosts.
+    timer2 = Timer.periodic(
+      const Duration(milliseconds: 600),
+      (_) {
+        if (!paused && gameStarted) {
+          for (int j = 0; j < food.length; j++) {
+            board[food[j]] = 'food';
+          }
+          for (int j = 0; j < empty.length; j++) {
+            board[empty[j]] = 'empty';
+          }
+          for (int i = 0; i < 3; i++) {
+            ghosts[i].move(board);
+            board[ghosts[i].position] = 'ghost${i + 1}';
+          }
+          update();
+        }
+      },
+    );
   }
 
   void switchPaused() {
@@ -1433,6 +1452,7 @@ class GameController extends GetxController {
 
   void stopTimers() {
     timer1!.cancel();
+    timer2!.cancel();
   }
 
   void declareWinningOrLosing() {
