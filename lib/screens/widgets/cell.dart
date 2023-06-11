@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pacman_getx/screens/widgets/pixel.dart';
 import 'package:pacman_getx/screens/widgets/player.dart';
-
 import 'ghost.dart';
 
 class Cell extends StatelessWidget {
@@ -18,7 +17,6 @@ class Cell extends StatelessWidget {
         'images/ghost1.png',
       ),
     );
-    ;
   }
 
   @override
