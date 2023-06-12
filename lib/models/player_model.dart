@@ -55,4 +55,28 @@ class Player {
   void switchMouthClosed() {
     mouthClosed = !mouthClosed;
   }
+
+  void setDirectionUp(List barrier) {
+    if (!barrier.contains(position - BoardConstants.numberInRow)) {
+      direction = "up";
+    }
+  }
+
+  void setDirectionDown(List barrier) {
+    if (!barrier.contains(position + BoardConstants.numberInRow)) {
+      direction = "down";
+    }
+  }
+
+  void setDirectionRight(List barrier) {
+    if (!barrier.contains(position + 1)) {
+      direction = "right";
+    }
+  }
+
+  void setDirectionLeft(List barrier) {
+    if (!barrier.contains(position - 1)) {
+      direction = "left";
+    }
+  }
 }

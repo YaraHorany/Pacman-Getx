@@ -17,7 +17,6 @@ class GameController extends GetxController {
   late Player pacman;
   List<Ghost> ghosts = [];
 
-  late int mazeNum;
   late bool paused;
   late bool gameStarted;
 
@@ -68,7 +67,6 @@ class GameController extends GetxController {
     timer1 = Timer.periodic(const Duration(milliseconds: 170), (_) {
       if (!paused) {
         pacman.switchMouthClosed();
-        print('switch mouth closed');
         if (food.contains(pacman.position)) {
           food.remove(pacman.position);
           score++;
@@ -118,18 +116,16 @@ class GameController extends GetxController {
   void changeDirection(DragUpdateDetails details, bool verticalUpdate) {
     if (!paused && gameStarted) {
       if (verticalUpdate) {
-        if (details.delta.dy > 0 &&
-            isNotBarrier(pacman.position + BoardConstants.numberInRow)) {
-          pacman.direction = "down";
-        } else if (details.delta.dy < 0 &&
-            isNotBarrier(pacman.position - BoardConstants.numberInRow)) {
-          pacman.direction = "up";
+        if (details.delta.dy > 0) {
+          pacman.setDirectionDown(barrier);
+        } else if (details.delta.dy < 0) {
+          pacman.setDirectionUp(barrier);
         }
       } else {
-        if (details.delta.dx > 0 && isNotBarrier(pacman.position + 1)) {
-          pacman.direction = "right";
-        } else if (details.delta.dx < 0 && isNotBarrier(pacman.position - 1)) {
-          pacman.direction = "left";
+        if (details.delta.dx > 0) {
+          pacman.setDirectionRight(barrier);
+        } else if (details.delta.dx < 0) {
+          pacman.setDirectionLeft(barrier);
         }
       }
       update();
@@ -146,7 +142,6 @@ class GameController extends GetxController {
   }
 
   void declareWinningOrLosing() {
-    // mouthClosed = false;
     pacman.mouthClosed = false;
     update();
     stopTimers();
