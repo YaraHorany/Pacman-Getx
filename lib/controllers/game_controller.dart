@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
-
 import '../models/ghost_model.dart';
 
 class GameController extends GetxController {
@@ -1270,15 +1269,18 @@ class GameController extends GetxController {
   List<int> food = [];
   List<int> empty = [];
 
-  final RxList<String> _board =
-      RxList<String>.filled(BoardConstants.numberOfSquares, 'empty');
-  List<String> get board => _board.value;
-  set board(List<String> value) => _board.value = value;
+  // final RxList<String> _board =
+  //     RxList<String>.filled(BoardConstants.numberOfSquares, 'empty');
+  // List<String> get board => _board.value;
+  // set board(List<String> value) => _board.value = value;
 
   final RxInt _score = 0.obs;
   int get score => _score.value;
   set score(int value) => _score.value = value;
 
+  // final RxInt _playerPos = (BoardConstants.numberInRow * 13 + 3).obs;
+  // int get playerPos => _playerPos.value;
+  // set playerPos(int value) => _playerPos.value = value;
   late int playerPos;
   late String playerDirection;
 
@@ -1306,22 +1308,23 @@ class GameController extends GetxController {
     mazeNum = Random().nextInt(barriers.length);
 
     food.clear();
+    getFood();
     empty.clear();
 
-    for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
-      if (barriers[mazeNum].contains(i)) {
-        board[i] = 'barrier';
-      } else {
-        food.add(i);
-        board[i] = 'food';
-      }
-    }
+    // for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
+    //   if (barriers[mazeNum].contains(i)) {
+    //     board[i] = 'barrier';
+    //   } else {
+    //     food.add(i);
+    //     board[i] = 'food';
+    //   }
+    // }
 
     // Initial player position
     playerPos = BoardConstants.numberInRow * 13 + 3;
     // Initial player direction
     playerDirection = "right";
-    board[playerPos] = 'player';
+    // board[playerPos] = 'player';
 
     ghosts.clear();
     ghosts.add(Ghost(
@@ -1331,14 +1334,15 @@ class GameController extends GetxController {
     ghosts.add(
         Ghost(position: BoardConstants.numberInRow * 5 + 1, direction: "down"));
 
-    for (int i = 0; i < 3; i++) {
-      board[ghosts[i].position] = 'ghost${i + 1}';
-    }
+    // for (int i = 0; i < 3; i++) {
+    //   board[ghosts[i].position] = 'ghost${i + 1}';
+    // }
 
     update();
   }
 
   void resetGame() {
+    stopTimers();
     _buildBoard();
   }
 
@@ -1356,7 +1360,8 @@ class GameController extends GetxController {
           score++;
           update();
         }
-        board[playerPos] = 'empty';
+        // board[playerPos] = 'empty';
+        print('switch playerDirection: ${playerDirection}');
         switch (playerDirection) {
           case "right":
             moveRight();
@@ -1371,7 +1376,7 @@ class GameController extends GetxController {
             moveDown();
             break;
         }
-        board[playerPos] = 'player';
+        // board[playerPos] = 'player';
       }
       update();
 
@@ -1380,6 +1385,14 @@ class GameController extends GetxController {
         stopTimers();
         declareWinningOrLosing();
       }
+
+      for (int i = 0; i < 3; i++) {
+        if (ghosts[i].position == playerPos) {
+          mouthClosed = false;
+          stopTimers();
+          declareWinningOrLosing();
+        }
+      }
     });
 
     // Moving the ghosts.
@@ -1387,15 +1400,15 @@ class GameController extends GetxController {
       const Duration(milliseconds: 600),
       (_) {
         if (!paused && gameStarted) {
-          for (int j = 0; j < food.length; j++) {
-            board[food[j]] = 'food';
-          }
-          for (int j = 0; j < empty.length; j++) {
-            board[empty[j]] = 'empty';
-          }
+          // for (int j = 0; j < food.length; j++) {
+          //   board[food[j]] = 'food';
+          // }
+          // for (int j = 0; j < empty.length; j++) {
+          //   board[empty[j]] = 'empty';
+          // }
           for (int i = 0; i < 3; i++) {
-            ghosts[i].move(board);
-            board[ghosts[i].position] = 'ghost${i + 1}';
+            ghosts[i].move(barriers[mazeNum]);
+            // board[ghosts[i].position] = 'ghost${i + 1}';
           }
           update();
         }
@@ -1412,16 +1425,18 @@ class GameController extends GetxController {
     if (!paused && gameStarted) {
       if (verticalUpdate) {
         if (details.delta.dy > 0 &&
-            board[playerPos + BoardConstants.numberInRow] != 'barrier') {
+            isNotBarrier(playerPos + BoardConstants.numberInRow)) {
           playerDirection = "down";
+          print('down');
         } else if (details.delta.dy < 0 &&
-            board[playerPos - BoardConstants.numberInRow] != 'barrier') {
+            isNotBarrier(playerPos - BoardConstants.numberInRow)) {
           playerDirection = "up";
+          print('up');
         }
       } else {
-        if (details.delta.dx > 0 && board[playerPos + 1] != 'barrier') {
+        if (details.delta.dx > 0 && isNotBarrier(playerPos + 1)) {
           playerDirection = "right";
-        } else if (details.delta.dx < 0 && board[playerPos - 1] != 'barrier') {
+        } else if (details.delta.dx < 0 && isNotBarrier(playerPos - 1)) {
           playerDirection = "left";
         }
       }
@@ -1430,28 +1445,47 @@ class GameController extends GetxController {
   }
 
   void moveRight() {
-    if (board[playerPos + 1] != 'barrier') {
+    if (isNotBarrier(playerPos + 1)) {
       playerPos++;
     }
+    // if (board[playerPos + 1] != 'barrier') {
+    //   checkLoosing(playerPos + 1);
+    //   playerPos++;
+    // }
   }
 
   void moveLeft() {
-    if (board[playerPos - 1] != 'barrier') {
+    if (isNotBarrier(playerPos - 1)) {
       playerPos--;
     }
+    // if (board[playerPos - 1] != 'barrier') {
+    //   checkLoosing(playerPos - 1);
+    //   playerPos--;
+    // }
   }
 
   void moveUp() {
-    if (board[playerPos - BoardConstants.numberInRow] != 'barrier') {
+    if (isNotBarrier(playerPos - BoardConstants.numberInRow)) {
       playerPos -= BoardConstants.numberInRow;
     }
+    // if (board[playerPos - BoardConstants.numberInRow] != 'barrier') {
+    //   checkLoosing(playerPos - BoardConstants.numberInRow);
+    //   playerPos -= BoardConstants.numberInRow;
+    // }
   }
 
   void moveDown() {
-    if (board[playerPos + BoardConstants.numberInRow] != 'barrier') {
+    if (isNotBarrier(playerPos + BoardConstants.numberInRow)) {
       playerPos += BoardConstants.numberInRow;
     }
+    // if (board[playerPos + BoardConstants.numberInRow] != 'barrier') {
+    //   checkLoosing(playerPos + BoardConstants.numberInRow);
+    //   playerPos += BoardConstants.numberInRow;
+    // }
   }
+
+  // Return true if the given index is located in the path and not in the barrier.
+  bool isNotBarrier(int index) => (!barriers[mazeNum].contains(index));
 
   void stopTimers() {
     timer1!.cancel();
@@ -1460,8 +1494,10 @@ class GameController extends GetxController {
 
   void declareWinningOrLosing() {
     Get.defaultDialog(
-      title: "Level completed",
-      content: const Text("Congratulations!"),
+      title: food.isEmpty ? "Level completed" : "Game Over!",
+      content: food.isEmpty
+          ? const Text("Congratulations!")
+          : Text("Your Score : $score"),
       actions: [
         TextButton(
           child: const Text('Restart'),
@@ -1472,5 +1508,14 @@ class GameController extends GetxController {
         ),
       ],
     ).then((value) => resetGame());
+  }
+
+  // Get the food's initial position.
+  void getFood() {
+    for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
+      if (!barriers[mazeNum].contains(i)) {
+        food.add(i);
+      }
+    }
   }
 }

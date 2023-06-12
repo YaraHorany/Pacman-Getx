@@ -7,8 +7,8 @@ class Ghost {
 
   Ghost({required this.position, required this.direction});
 
-  void move(List board) {
-    List<String> ways = checkPossibleWays(board);
+  void move(List barrier) {
+    List<String> ways = _checkPossibleWays(barrier);
     direction = ways[Random().nextInt(ways.length)];
 
     switch (direction) {
@@ -27,19 +27,19 @@ class Ghost {
     }
   }
 
-  List<String> checkPossibleWays(List board) {
+  List<String> _checkPossibleWays(List barrier) {
     List<String> ways = [];
 
-    if (board[position + 1] != 'barrier') {
+    if (!barrier.contains(position + 1)) {
       ways.add("right");
     }
-    if (board[position - 1] != 'barrier') {
+    if (!barrier.contains(position - 1)) {
       ways.add("left");
     }
-    if (board[position - BoardConstants.numberInRow] != 'barrier') {
+    if (!barrier.contains(position - BoardConstants.numberInRow)) {
       ways.add("up");
     }
-    if (board[position + BoardConstants.numberInRow] != 'barrier') {
+    if (!barrier.contains(position + BoardConstants.numberInRow)) {
       ways.add("down");
     }
 

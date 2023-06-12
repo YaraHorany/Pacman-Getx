@@ -18,7 +18,7 @@ class Cell extends StatelessWidget {
 
   Widget _buildCell() {
     for (int i = 0; i < 3; i++) {
-      if (gameController.board[index] == 'ghost${i + 1}') {
+      if (gameController.ghosts[i].position == index) {
         return Ghost(
           image: Image.asset(
             'images/ghost${i + 1}.png',
@@ -26,20 +26,9 @@ class Cell extends StatelessWidget {
         );
       }
     }
-    if (gameController.board[index] == 'barrier') {
-      return MyPixel(
-        innerColor: Colors.blue[800]!,
-        outerColor: Colors.blue[900]!,
-      );
-    } else if (gameController.board[index] == 'food') {
-      return const MyPixel(
-        innerColor: Colors.yellow,
-        outerColor: Colors.black,
-      );
-    } else if (gameController.board[index] == 'player' &&
-        gameController.mouthClosed) {
+    if (gameController.playerPos == index && gameController.mouthClosed) {
       return const MyPlayer(mouthClosed: true);
-    } else if (gameController.board[index] == 'player') {
+    } else if (gameController.playerPos == index) {
       switch (gameController.playerDirection) {
         case "right":
           return const MyPlayer(
@@ -75,12 +64,87 @@ class Cell extends StatelessWidget {
             mouthClosed: false,
           );
       }
+    } else if (gameController.barriers[gameController.mazeNum]
+        .contains(index)) {
+      return MyPixel(
+        innerColor: Colors.blue[800]!,
+        outerColor: Colors.blue[900]!,
+      );
+    } else if (gameController.food.contains(index)) {
+      return const MyPixel(
+        innerColor: Colors.yellow,
+        outerColor: Colors.black,
+      );
     } else {
       return const MyPixel(
         innerColor: Colors.black,
         outerColor: Colors.black,
       );
     }
+    // for (int i = 0; i < 3; i++) {
+    //   if (gameController.board[index] == 'ghost${i + 1}') {
+    //     return Ghost(
+    //       image: Image.asset(
+    //         'images/ghost${i + 1}.png',
+    //       ),
+    //     );
+    //   }
+    // }
+    // if (gameController.board[index] == 'barrier') {
+    //   return MyPixel(
+    //     innerColor: Colors.blue[800]!,
+    //     outerColor: Colors.blue[900]!,
+    //   );
+    // } else if (gameController.board[index] == 'food') {
+    //   return const MyPixel(
+    //     innerColor: Colors.yellow,
+    //     outerColor: Colors.black,
+    //   );
+    // } else if (gameController.board[index] == 'player' &&
+    //     gameController.mouthClosed) {
+    //   return const MyPlayer(mouthClosed: true);
+    // } else if (gameController.board[index] == 'player') {
+    //   switch (gameController.playerDirection) {
+    //     case "right":
+    //       return const MyPlayer(
+    //         mouthClosed: false,
+    //       );
+    //       break;
+    //     case "left":
+    //       return Transform.rotate(
+    //         angle: pi,
+    //         child: const MyPlayer(
+    //           mouthClosed: false,
+    //         ),
+    //       );
+    //       break;
+    //     case "up":
+    //       return Transform.rotate(
+    //         angle: 3 * pi / 2,
+    //         child: const MyPlayer(
+    //           mouthClosed: false,
+    //         ),
+    //       );
+    //       break;
+    //     case "down":
+    //       return Transform.rotate(
+    //         angle: pi / 2,
+    //         child: const MyPlayer(
+    //           mouthClosed: false,
+    //         ),
+    //       );
+    //       break;
+    //     default:
+    //       return const MyPlayer(
+    //         mouthClosed: false,
+    //       );
+    //   }
+    // } else {
+    //   return const MyPixel(
+    //     innerColor: Colors.black,
+    //     outerColor: Colors.black,
+    //   );
+    // }
   }
 
   @override
