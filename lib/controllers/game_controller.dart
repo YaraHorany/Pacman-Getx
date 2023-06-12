@@ -1269,21 +1269,11 @@ class GameController extends GetxController {
   ];
   List<int> food = [];
 
-  // final RxList<String> _board =
-  //     RxList<String>.filled(BoardConstants.numberOfSquares, 'empty');
-  // List<String> get board => _board.value;
-  // set board(List<String> value) => _board.value = value;
-
   final RxInt _score = 0.obs;
   int get score => _score.value;
   set score(int value) => _score.value = value;
 
-  // final RxInt _playerPos = (BoardConstants.numberInRow * 13 + 3).obs;
-  // int get playerPos => _playerPos.value;
-  // set playerPos(int value) => _playerPos.value = value;
-
   late Player pacman;
-
   List<Ghost> ghosts = [];
 
   late int mazeNum;
@@ -1311,10 +1301,7 @@ class GameController extends GetxController {
     getFood();
 
     pacman = Player(
-      position: BoardConstants.numberInRow * 13 + 3,
-      direction: "right",
-    );
-
+        position: BoardConstants.numberInRow * 13 + 3, direction: "right");
     ghosts.clear();
     ghosts.add(Ghost(
         position: BoardConstants.numberInRow * 12 - 2, direction: "left"));
@@ -1342,18 +1329,19 @@ class GameController extends GetxController {
         if (food.contains(pacman.position)) {
           food.remove(pacman.position);
           score++;
-          update();
         }
         pacman.move(barriers[mazeNum]);
       }
       update();
 
+      // Winning scenario
       if (food.isEmpty) {
         mouthClosed = false;
         stopTimers();
         declareWinningOrLosing();
       }
 
+      // Loosing scenario
       for (int i = 0; i < 3; i++) {
         if (ghosts[i].position == pacman.position) {
           mouthClosed = false;

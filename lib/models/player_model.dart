@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:pacman_getx/constants.dart';
 
 class Player {

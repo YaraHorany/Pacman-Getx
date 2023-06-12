@@ -14,7 +14,7 @@ class GameScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          Expanded(
+          const Expanded(
             flex: 10,
             child: Board(),
           ),

@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../controllers/game_controller.dart';
 import 'cell.dart';
 import 'package:pacman_getx/constants.dart';
 import 'package:get/get.dart';
+import 'package:pacman_getx/controllers/game_controller.dart';
 
 class Board extends StatelessWidget {
-  final GameController gameController = Get.find<GameController>();
-
-  Board({Key? key}) : super(key: key);
+  const Board({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(
       builder: (GetxController controller) => GestureDetector(
         onVerticalDragUpdate: (details) {
-          gameController.changeDirection(details, true);
+          Get.find<GameController>().changeDirection(details, true);
         },
         onHorizontalDragUpdate: (details) {
-          gameController.changeDirection(details, false);
+          Get.find<GameController>().changeDirection(details, false);
         },
         child: GridView.builder(
           itemCount: BoardConstants.numberOfSquares,
