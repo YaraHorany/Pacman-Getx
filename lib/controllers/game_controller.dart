@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pacman_getx/constants.dart';
 import '../models/ghost_model.dart';
+import 'package:pacman_getx/models/player_model.dart';
 
 class GameController extends GetxController {
   List<List<int>> barriers = [
@@ -1267,7 +1268,6 @@ class GameController extends GetxController {
     ],
   ];
   List<int> food = [];
-  List<int> empty = [];
 
   // final RxList<String> _board =
   //     RxList<String>.filled(BoardConstants.numberOfSquares, 'empty');
@@ -1281,8 +1281,8 @@ class GameController extends GetxController {
   // final RxInt _playerPos = (BoardConstants.numberInRow * 13 + 3).obs;
   // int get playerPos => _playerPos.value;
   // set playerPos(int value) => _playerPos.value = value;
-  late int playerPos;
-  late String playerDirection;
+
+  late Player pacman;
 
   List<Ghost> ghosts = [];
 
@@ -1309,22 +1309,11 @@ class GameController extends GetxController {
 
     food.clear();
     getFood();
-    empty.clear();
 
-    // for (int i = 0; i < BoardConstants.numberOfSquares; i++) {
-    //   if (barriers[mazeNum].contains(i)) {
-    //     board[i] = 'barrier';
-    //   } else {
-    //     food.add(i);
-    //     board[i] = 'food';
-    //   }
-    // }
-
-    // Initial player position
-    playerPos = BoardConstants.numberInRow * 13 + 3;
-    // Initial player direction
-    playerDirection = "right";
-    // board[playerPos] = 'player';
+    pacman = Player(
+      position: BoardConstants.numberInRow * 13 + 3,
+      direction: "right",
+    );
 
     ghosts.clear();
     ghosts.add(Ghost(
@@ -1333,10 +1322,6 @@ class GameController extends GetxController {
         Ghost(position: BoardConstants.numberInRow + 1, direction: "right"));
     ghosts.add(
         Ghost(position: BoardConstants.numberInRow * 5 + 1, direction: "down"));
-
-    // for (int i = 0; i < 3; i++) {
-    //   board[ghosts[i].position] = 'ghost${i + 1}';
-    // }
 
     update();
   }
@@ -1354,29 +1339,12 @@ class GameController extends GetxController {
     timer1 = Timer.periodic(const Duration(milliseconds: 170), (_) {
       if (!paused) {
         mouthClosed = !mouthClosed;
-        if (food.contains(playerPos)) {
-          food.remove(playerPos);
-          empty.add(playerPos);
+        if (food.contains(pacman.position)) {
+          food.remove(pacman.position);
           score++;
           update();
         }
-        // board[playerPos] = 'empty';
-        print('switch playerDirection: ${playerDirection}');
-        switch (playerDirection) {
-          case "right":
-            moveRight();
-            break;
-          case "left":
-            moveLeft();
-            break;
-          case "up":
-            moveUp();
-            break;
-          case "down":
-            moveDown();
-            break;
-        }
-        // board[playerPos] = 'player';
+        pacman.move(barriers[mazeNum]);
       }
       update();
 
@@ -1387,7 +1355,7 @@ class GameController extends GetxController {
       }
 
       for (int i = 0; i < 3; i++) {
-        if (ghosts[i].position == playerPos) {
+        if (ghosts[i].position == pacman.position) {
           mouthClosed = false;
           stopTimers();
           declareWinningOrLosing();
@@ -1400,15 +1368,8 @@ class GameController extends GetxController {
       const Duration(milliseconds: 600),
       (_) {
         if (!paused && gameStarted) {
-          // for (int j = 0; j < food.length; j++) {
-          //   board[food[j]] = 'food';
-          // }
-          // for (int j = 0; j < empty.length; j++) {
-          //   board[empty[j]] = 'empty';
-          // }
           for (int i = 0; i < 3; i++) {
             ghosts[i].move(barriers[mazeNum]);
-            // board[ghosts[i].position] = 'ghost${i + 1}';
           }
           update();
         }
@@ -1425,63 +1386,21 @@ class GameController extends GetxController {
     if (!paused && gameStarted) {
       if (verticalUpdate) {
         if (details.delta.dy > 0 &&
-            isNotBarrier(playerPos + BoardConstants.numberInRow)) {
-          playerDirection = "down";
-          print('down');
+            isNotBarrier(pacman.position + BoardConstants.numberInRow)) {
+          pacman.direction = "down";
         } else if (details.delta.dy < 0 &&
-            isNotBarrier(playerPos - BoardConstants.numberInRow)) {
-          playerDirection = "up";
-          print('up');
+            isNotBarrier(pacman.position - BoardConstants.numberInRow)) {
+          pacman.direction = "up";
         }
       } else {
-        if (details.delta.dx > 0 && isNotBarrier(playerPos + 1)) {
-          playerDirection = "right";
-        } else if (details.delta.dx < 0 && isNotBarrier(playerPos - 1)) {
-          playerDirection = "left";
+        if (details.delta.dx > 0 && isNotBarrier(pacman.position + 1)) {
+          pacman.direction = "right";
+        } else if (details.delta.dx < 0 && isNotBarrier(pacman.position - 1)) {
+          pacman.direction = "left";
         }
       }
       update();
     }
-  }
-
-  void moveRight() {
-    if (isNotBarrier(playerPos + 1)) {
-      playerPos++;
-    }
-    // if (board[playerPos + 1] != 'barrier') {
-    //   checkLoosing(playerPos + 1);
-    //   playerPos++;
-    // }
-  }
-
-  void moveLeft() {
-    if (isNotBarrier(playerPos - 1)) {
-      playerPos--;
-    }
-    // if (board[playerPos - 1] != 'barrier') {
-    //   checkLoosing(playerPos - 1);
-    //   playerPos--;
-    // }
-  }
-
-  void moveUp() {
-    if (isNotBarrier(playerPos - BoardConstants.numberInRow)) {
-      playerPos -= BoardConstants.numberInRow;
-    }
-    // if (board[playerPos - BoardConstants.numberInRow] != 'barrier') {
-    //   checkLoosing(playerPos - BoardConstants.numberInRow);
-    //   playerPos -= BoardConstants.numberInRow;
-    // }
-  }
-
-  void moveDown() {
-    if (isNotBarrier(playerPos + BoardConstants.numberInRow)) {
-      playerPos += BoardConstants.numberInRow;
-    }
-    // if (board[playerPos + BoardConstants.numberInRow] != 'barrier') {
-    //   checkLoosing(playerPos + BoardConstants.numberInRow);
-    //   playerPos += BoardConstants.numberInRow;
-    // }
   }
 
   // Return true if the given index is located in the path and not in the barrier.

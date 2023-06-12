@@ -26,10 +26,10 @@ class Cell extends StatelessWidget {
         );
       }
     }
-    if (gameController.playerPos == index && gameController.mouthClosed) {
+    if (gameController.pacman.position == index && gameController.mouthClosed) {
       return const MyPlayer(mouthClosed: true);
-    } else if (gameController.playerPos == index) {
-      switch (gameController.playerDirection) {
+    } else if (gameController.pacman.position == index) {
+      switch (gameController.pacman.direction) {
         case "right":
           return const MyPlayer(
             mouthClosed: false,
