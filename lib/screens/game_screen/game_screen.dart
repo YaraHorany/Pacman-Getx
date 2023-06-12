@@ -58,7 +58,7 @@ class GameScreen extends StatelessWidget {
                               : GestureDetector(
                                   onTap: () {
                                     gameController.switchPaused();
-                                    gameController.mouthClosed = false;
+                                    gameController.pacman.mouthClosed = false;
                                   },
                                   child: const Icon(
                                     Icons.pause,
@@ -72,9 +72,10 @@ class GameScreen extends StatelessWidget {
                               child: const Text(
                                 'Start',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                 ),

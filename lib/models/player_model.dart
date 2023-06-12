@@ -3,10 +3,12 @@ import 'package:pacman_getx/constants.dart';
 class Player {
   int position;
   String direction;
+  bool mouthClosed;
 
   Player({
     required this.position,
     required this.direction,
+    required this.mouthClosed,
   });
 
   void move(List barrier) {
@@ -48,5 +50,9 @@ class Player {
     if (!barrier.contains(position + BoardConstants.numberInRow)) {
       position += BoardConstants.numberInRow;
     }
+  }
+
+  void switchMouthClosed() {
+    mouthClosed = !mouthClosed;
   }
 }

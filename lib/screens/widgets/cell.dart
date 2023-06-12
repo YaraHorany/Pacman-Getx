@@ -27,46 +27,32 @@ class Cell extends StatelessWidget {
         );
       }
     }
-    if (gameController.pacman.position == index && gameController.mouthClosed) {
-      return const MyPlayer(mouthClosed: true);
+    if (gameController.pacman.position == index &&
+        gameController.pacman.mouthClosed) {
+      return const MyPlayer();
     } else if (gameController.pacman.position == index) {
       switch (gameController.pacman.direction) {
         case "right":
-          return const MyPlayer(
-            mouthClosed: false,
-          );
-          break;
+          return const MyPlayer();
         case "left":
           return Transform.rotate(
             angle: pi,
-            child: const MyPlayer(
-              mouthClosed: false,
-            ),
+            child: const MyPlayer(),
           );
-          break;
         case "up":
           return Transform.rotate(
             angle: 3 * pi / 2,
-            child: const MyPlayer(
-              mouthClosed: false,
-            ),
+            child: const MyPlayer(),
           );
-          break;
         case "down":
           return Transform.rotate(
             angle: pi / 2,
-            child: const MyPlayer(
-              mouthClosed: false,
-            ),
+            child: const MyPlayer(),
           );
-          break;
         default:
-          return const MyPlayer(
-            mouthClosed: false,
-          );
+          return const MyPlayer();
       }
-    } else if (gameController.barriers[gameController.mazeNum]
-        .contains(index)) {
+    } else if (gameController.barrier.contains(index)) {
       return MyPixel(
         innerColor: Colors.blue[800]!,
         outerColor: Colors.blue[900]!,
