@@ -4,11 +4,13 @@ class Player {
   int position;
   String direction;
   bool mouthClosed;
+  final String image;
 
   Player({
     required this.position,
     required this.direction,
     required this.mouthClosed,
+    required this.image,
   });
 
   void move(List barrier) {

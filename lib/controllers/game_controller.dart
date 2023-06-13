@@ -43,6 +43,7 @@ class GameController extends GetxController {
       position: BoardConstants.numberInRow * 13 + 3,
       direction: "right",
       mouthClosed: false,
+      image: 'images/pacman.png',
     );
     ghosts.clear();
     ghosts.add(Ghost(

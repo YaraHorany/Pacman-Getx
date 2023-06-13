@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:pacman_getx/controllers/game_controller.dart';
 
 class MyPlayer extends StatelessWidget {
-  const MyPlayer({Key? key}) : super(key: key);
+  final Image image;
+
+  const MyPlayer({Key? key, required this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class MyPlayer extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             )
-          : Image.asset('images/player.png'),
+          : image,
     );
   }
 }

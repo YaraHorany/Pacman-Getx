@@ -18,6 +18,8 @@ class Cell extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildCell() {
+    final Image playerImage = Image.asset(gameController.pacman.image);
+
     for (int i = 0; i < BoardConstants.ghostsNumber; i++) {
       if (gameController.ghosts[i].position == index) {
         return Ghost(
@@ -27,28 +29,22 @@ class Cell extends StatelessWidget {
     }
     if (gameController.pacman.position == index &&
         gameController.pacman.mouthClosed) {
-      return const MyPlayer();
+      return MyPlayer(image: playerImage);
     } else if (gameController.pacman.position == index) {
       switch (gameController.pacman.direction) {
         case "right":
-          return const MyPlayer();
+          return MyPlayer(image: playerImage);
         case "left":
           return Transform.rotate(
-            angle: pi,
-            child: const MyPlayer(),
-          );
+              angle: pi, child: MyPlayer(image: playerImage));
         case "up":
           return Transform.rotate(
-            angle: 3 * pi / 2,
-            child: const MyPlayer(),
-          );
+              angle: 3 * pi / 2, child: MyPlayer(image: playerImage));
         case "down":
           return Transform.rotate(
-            angle: pi / 2,
-            child: const MyPlayer(),
-          );
+              angle: pi / 2, child: MyPlayer(image: playerImage));
         default:
-          return const MyPlayer();
+          return MyPlayer(image: playerImage);
       }
     } else if (gameController.barrier.contains(index)) {
       return MyPixel(
