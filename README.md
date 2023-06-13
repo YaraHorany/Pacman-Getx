@@ -16,6 +16,9 @@ The player controls Pac-Man, who must eat all the dots inside an enclosed maze w
 3. Stay away from ghosts.
 4. Eat all the food.
 
+## State Management
+[GetX](https://pub.dev/packages/get) is a quick, stable, and light state management library in flutter.
+
 ## Screenshots
 
 | Initial mode                                                        | Playing mode                                                       | Winning mode                                                       | Losing mode                                                       |
