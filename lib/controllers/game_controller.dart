@@ -46,11 +46,17 @@ class GameController extends GetxController {
     );
     ghosts.clear();
     ghosts.add(Ghost(
-        position: BoardConstants.numberInRow * 12 - 2, direction: "left"));
-    ghosts.add(
-        Ghost(position: BoardConstants.numberInRow + 1, direction: "right"));
-    ghosts.add(
-        Ghost(position: BoardConstants.numberInRow * 5 + 1, direction: "down"));
+        position: BoardConstants.numberInRow * 12 - 2,
+        direction: "left",
+        image: 'images/redGhost.png'));
+    ghosts.add(Ghost(
+        position: BoardConstants.numberInRow + 1,
+        direction: "right",
+        image: 'images/yellowGhost.png'));
+    ghosts.add(Ghost(
+        position: BoardConstants.numberInRow * 5 + 1,
+        direction: "down",
+        image: 'images/greenGhost.png'));
 
     update();
   }
@@ -80,7 +86,7 @@ class GameController extends GetxController {
     timer2 = Timer.periodic(
       const Duration(milliseconds: 600),
       (_) {
-        if (!paused && gameStarted) {
+        if (!paused) {
           for (int i = 0; i < BoardConstants.ghostsNumber; i++) {
             ghosts[i].move(barrier);
           }
@@ -149,7 +155,7 @@ class GameController extends GetxController {
       title: food.isEmpty ? "Level completed" : "Game Over!",
       content: food.isEmpty
           ? const Text("Congratulations!")
-          : Text("Your Score : $score"),
+          : Text("Your Score : ${score}"),
       actions: [
         TextButton(
           child: const Text('Restart'),

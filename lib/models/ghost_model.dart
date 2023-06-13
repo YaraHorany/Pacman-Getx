@@ -4,8 +4,13 @@ import 'package:pacman_getx/constants.dart';
 class Ghost {
   int position;
   String direction;
+  final String image;
 
-  Ghost({required this.position, required this.direction});
+  Ghost({
+    required this.position,
+    required this.direction,
+    required this.image,
+  });
 
   void move(List barrier) {
     List<String> ways = _checkPossibleWays(barrier);

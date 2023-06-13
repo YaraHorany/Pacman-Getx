@@ -14,6 +14,5 @@ class Ghost extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: image,
     );
-    ;
   }
 }

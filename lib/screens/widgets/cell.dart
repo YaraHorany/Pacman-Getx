@@ -21,9 +21,7 @@ class Cell extends StatelessWidget {
     for (int i = 0; i < BoardConstants.ghostsNumber; i++) {
       if (gameController.ghosts[i].position == index) {
         return Ghost(
-          image: Image.asset(
-            'images/ghost${i + 1}.png',
-          ),
+          image: Image.asset(gameController.ghosts[i].image),
         );
       }
     }
