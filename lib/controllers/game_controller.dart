@@ -156,7 +156,7 @@ class GameController extends GetxController {
       title: food.isEmpty ? "Level completed" : "Game Over!",
       content: food.isEmpty
           ? const Text("Congratulations!")
-          : Text("Your Score : ${score}"),
+          : Text("Your Score : $score"),
       actions: [
         TextButton(
           child: const Text('Restart'),
